@@ -9,6 +9,7 @@ import {
   HiOutlineTrendingDown,
   HiOutlineCalendar,
   HiOutlineClock,
+  HiOutlineArrowRight,
 } from 'react-icons/hi';
 import {
   AreaChart,
@@ -25,10 +26,10 @@ import {
 
 const Dashboard = () => {
   const stats = [
-    { label: 'Total Students', value: '2,543', change: '+12%', trend: 'up', icon: HiOutlineUsers, color: 'blue' },
-    { label: 'Total Teachers', value: '156', change: '+5%', trend: 'up', icon: HiOutlineAcademicCap, color: 'emerald' },
-    { label: 'Active Courses', value: '48', change: '+8%', trend: 'up', icon: HiOutlineBookOpen, color: 'violet' },
-    { label: 'Fee Collection', value: '₹45.2L', change: '-3%', trend: 'down', icon: HiOutlineCash, color: 'amber' },
+    { label: 'Total Students', value: '2,543', change: '+12%', trend: 'up', icon: HiOutlineUsers, color: 'indigo', gradient: 'from-indigo-500 to-purple-500' },
+    { label: 'Total Teachers', value: '156', change: '+5%', trend: 'up', icon: HiOutlineAcademicCap, color: 'emerald', gradient: 'from-emerald-500 to-teal-500' },
+    { label: 'Active Courses', value: '48', change: '+8%', trend: 'up', icon: HiOutlineBookOpen, color: 'violet', gradient: 'from-violet-500 to-pink-500' },
+    { label: 'Fee Collection', value: '₹45.2L', change: '-3%', trend: 'down', icon: HiOutlineCash, color: 'amber', gradient: 'from-amber-500 to-orange-500' },
   ];
 
   const enrollmentData = [
@@ -41,11 +42,11 @@ const Dashboard = () => {
   ];
 
   const departmentData = [
-    { name: 'Computer Science', value: 680, color: '#3B82F6' },
+    { name: 'Computer Science', value: 680, color: '#6366f1' },
     { name: 'Electronics', value: 520, color: '#10B981' },
     { name: 'Mechanical', value: 450, color: '#8B5CF6' },
     { name: 'Civil', value: 380, color: '#F59E0B' },
-    { name: 'Others', value: 513, color: '#6B7280' },
+    { name: 'Others', value: 513, color: '#EC4899' },
   ];
 
   const recentActivities = [
@@ -57,73 +58,115 @@ const Dashboard = () => {
   ];
 
   const upcomingEvents = [
-    { id: 1, title: 'Faculty Meeting', date: 'Today, 3:00 PM', type: 'meeting' },
-    { id: 2, title: 'Student Orientation', date: 'Tomorrow, 10:00 AM', type: 'event' },
-    { id: 3, title: 'Board Exam Starts', date: 'Dec 15, 2024', type: 'exam' },
-    { id: 4, title: 'Winter Vacation', date: 'Dec 25, 2024', type: 'holiday' },
+    { id: 1, title: 'Faculty Meeting', date: 'Today, 3:00 PM', type: 'meeting', color: 'bg-indigo-500' },
+    { id: 2, title: 'Student Orientation', date: 'Tomorrow, 10:00 AM', type: 'event', color: 'bg-emerald-500' },
+    { id: 3, title: 'Board Exam Starts', date: 'Dec 15, 2024', type: 'exam', color: 'bg-rose-500' },
+    { id: 4, title: 'Winter Vacation', date: 'Dec 25, 2024', type: 'holiday', color: 'bg-amber-500' },
   ];
 
   const colorClasses = {
-    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+    indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
     emerald: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
     violet: 'bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400',
     amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400',
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  };
+
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-        <p className="text-gray-500 dark:text-gray-400">Welcome back! Here's what's happening at MUC.</p>
-      </div>
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+            Dashboard
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back! Here's what's happening at MUC.</p>
+        </div>
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="btn-primary flex items-center gap-2 self-start sm:self-auto"
+        >
+          View Reports
+          <HiOutlineArrowRight className="w-4 h-4" />
+        </motion.button>
+      </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div variants={itemVariants} className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="card"
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            className="stat-card group"
           >
-            <div className="flex items-center justify-between">
-              <div className={`p-3 rounded-xl ${colorClasses[stat.color]}`}>
-                <stat.icon className="w-6 h-6" />
-              </div>
-              <div className={`flex items-center gap-1 text-sm font-medium ${
-                stat.trend === 'up' ? 'text-green-500' : 'text-red-500'
+            <div className="flex items-center justify-between relative z-10">
+              <motion.div 
+                className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg`}
+                whileHover={{ rotate: [0, -10, 10, 0], transition: { duration: 0.5 } }}
+              >
+                <stat.icon className="w-6 h-6 text-white" />
+              </motion.div>
+              <div className={`flex items-center gap-1 text-sm font-semibold px-2.5 py-1 rounded-full ${
+                stat.trend === 'up' 
+                  ? 'text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400' 
+                  : 'text-rose-600 bg-rose-100 dark:bg-rose-900/30 dark:text-rose-400'
               }`}>
-                {stat.trend === 'up' ? <HiOutlineTrendingUp /> : <HiOutlineTrendingDown />}
+                {stat.trend === 'up' ? <HiOutlineTrendingUp className="w-4 h-4" /> : <HiOutlineTrendingDown className="w-4 h-4" />}
                 {stat.change}
               </div>
             </div>
-            <div className="mt-4">
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+            <div className="mt-4 relative z-10">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                {stat.value}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{stat.label}</p>
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Enrollment Chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          whileHover={{ y: -2 }}
           className="lg:col-span-2 card"
         >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Student Enrollment Trend</h3>
-          <div className="h-64">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Student Enrollment Trend</h3>
+            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-dark-100 px-3 py-1 rounded-full">Last 6 months</span>
+          </div>
+          <div className="h-64 sm:h-72">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={enrollmentData}>
                 <defs>
                   <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
@@ -133,15 +176,16 @@ const Dashboard = () => {
                   contentStyle={{
                     backgroundColor: '#1F2937',
                     border: 'none',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     color: '#F3F4F6',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
                   }}
                 />
                 <Area
                   type="monotone"
                   dataKey="students"
-                  stroke="#3B82F6"
-                  strokeWidth={2}
+                  stroke="#6366f1"
+                  strokeWidth={3}
                   fillOpacity={1}
                   fill="url(#colorStudents)"
                 />
@@ -155,6 +199,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          whileHover={{ y: -2 }}
           className="card"
         >
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Students by Department</h3>
@@ -197,31 +242,41 @@ const Dashboard = () => {
             ))}
           </div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activities */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
+          whileHover={{ y: -2 }}
           className="card"
         >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Activities</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Activities</h3>
+            <button className="text-sm text-primary-600 dark:text-primary-400 hover:underline">View All</button>
+          </div>
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3">
-                <div className="w-2 h-2 mt-2 rounded-full bg-primary-500" />
+            {recentActivities.map((activity, index) => (
+              <motion.div 
+                key={activity.id} 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 + index * 0.1 }}
+                className="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-200 transition-colors cursor-pointer"
+              >
+                <div className="w-2.5 h-2.5 mt-1.5 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 animate-pulse" />
                 <div className="flex-1">
-                  <p className="text-sm text-gray-900 dark:text-white">{activity.action}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.action}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">{activity.name}</p>
                 </div>
-                <span className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                <span className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1 bg-gray-100 dark:bg-dark-100 px-2 py-1 rounded-full">
                   <HiOutlineClock className="w-3 h-3" />
                   {activity.time}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -231,25 +286,37 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
+          whileHover={{ y: -2 }}
           className="card"
         >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Upcoming Events</h3>
-          <div className="space-y-4">
-            {upcomingEvents.map((event) => (
-              <div key={event.id} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-dark-200">
-                <div className="p-2 rounded-lg bg-primary-100 dark:bg-primary-900/30">
-                  <HiOutlineCalendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming Events</h3>
+            <button className="text-sm text-primary-600 dark:text-primary-400 hover:underline">View Calendar</button>
+          </div>
+          <div className="space-y-3">
+            {upcomingEvents.map((event, index) => (
+              <motion.div 
+                key={event.id} 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 + index * 0.1 }}
+                whileHover={{ x: 4 }}
+                className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-dark-200 hover:bg-gray-100 dark:hover:bg-dark-100 transition-colors cursor-pointer group"
+              >
+                <div className={`p-2.5 rounded-xl ${event.color} shadow-lg`}>
+                  <HiOutlineCalendar className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{event.title}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{event.title}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">{event.date}</p>
                 </div>
-              </div>
+                <HiOutlineArrowRight className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
             ))}
           </div>
         </motion.div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
